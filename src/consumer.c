@@ -6,7 +6,7 @@
 
 #include <unistd.h>
 #include <stdlib.h>
-#include <assert.h>
+#include <stdio.h>
 
 static void
 consume_element (void)
@@ -17,7 +17,11 @@ consume_element (void)
   struct element e = dequeue();
 
   // make sure we are consistent
-  assert(e.id == n);
+  if (e.id != n)
+    {
+      fprintf(stderr, "CORRUPTION DETECTED! expected id %zu, got id %zu\n", n, e.id);
+      abort();
+    }
   n++;
 
   // operate on the element

@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <pthread.h>
+#include <stdlib.h>
 
 volatile struct element queue[QUEUE_CAPACITY] = { 0 };
 size_t head_r = 0;
@@ -48,9 +49,25 @@ dequeue (void)
 void
 monitor (void)
 {
+  size_t window[10] = { 0 };
+  size_t n = 0;
+  size_t last = 0;
+
   while (1)
     {
-      printf("filled %zu; avail: %zu; current: %zu\n", queue_filled, queue_empty, queue[head_r].id);
+      size_t processed = queue[head_r].id - last;
+      last = queue[head_r].id;
+      window[n++] = processed;
+      n %= 10;
+
+      double throughput = 0;
+      int i;
+      for (i = 0; i < 10; ++i)
+        throughput += window[i];
+      throughput /= MONITOR_INTERVAL / 100000.0;
+
+      size_t filled = (head_r - head_w) % QUEUE_CAPACITY;
+      printf("filled %zu; avail: %zu; current: %zu (%.2f/s)\n", filled, QUEUE_CAPACITY - filled, queue[head_r].id, throughput);
 
       usleep(MONITOR_INTERVAL);
     }
