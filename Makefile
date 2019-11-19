@@ -1,8 +1,7 @@
 
 BIN = producer_consumer
 
-CFLAGS = -Wall -Wextra -g
-LDADD = -lpthread
+CFLAGS = -Wall -Wextra -g -pthread
 
 SRC = src/main.c \
       src/queue.c \
@@ -15,4 +14,4 @@ clean:
 	$(RM) $(BIN)
 
 $(BIN): $(SRC)
-	$(CC) -o $@ $(CFLAGS) $(LDADD) $^
+	$(CC) -o $@ $(CFLAGS) $^

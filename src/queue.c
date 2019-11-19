@@ -11,8 +11,8 @@
 volatile struct element queue[QUEUE_CAPACITY] = { 0 };
 size_t head_r = 0;
 size_t head_w = 0;
-volatile size_t queue_filled = 0;
-volatile size_t queue_empty = QUEUE_CAPACITY;
+volatile size_t queue_used = 0;
+volatile size_t queue_avail = QUEUE_CAPACITY;
 
 void
 queue_init (void)
@@ -23,25 +23,25 @@ queue_init (void)
 void
 enqueue (struct element e)
 {
-  while (queue_empty == 0);
+  while (queue_avail == 0);
 
   queue[head_w] = e;
   head_w = (head_w + 1) % QUEUE_CAPACITY;
-  queue_filled++;
+  queue_used++;
 
-  queue_empty--;
+  queue_avail--;
 }
 
 struct element
 dequeue (void)
 {
-  while (queue_filled == 0);
+  while (queue_used == 0);
 
   struct element e = queue[head_r];
   head_r = (head_r + 1) % QUEUE_CAPACITY;
-  queue_empty++;
+  queue_avail++;
 
-  queue_filled--;
+  queue_used--;
 
   return e;
 }
