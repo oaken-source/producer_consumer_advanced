@@ -1,0 +1,19 @@
+
+     ____                _ /\/|____
+    |  _ \ _ __ ___   __| |/\// ___|___  _ __  ___
+    | |_) | '__/ _ \ / _` |  | |   / _ \| '_ \/ __|
+    |  __/| | | (_) | (_| |  | |__| (_) | | | \__ \
+    |_|   |_|  \___/ \__,_|   \____\___/|_| |_|___/
+
+            Programmrahmen "Producer / Consumer"
+
+Aufgabenstellung:
+-----------------
+
+ Der gegebene Programmrahmen enthält eine Produzenten / Konsumenten Logik in
+ zwei Threads, mit einer geteilten Queue zur Kommunikation der produzierten bzw.
+ konsumierten Elemente.
+
+ Identifizieren Sie die Kritische Sekition im Programm, und schützen Sie den
+ Programmablauf vor Verfälschung der geteilten Daten durch die Verwendung von
+ Semaphoren.
