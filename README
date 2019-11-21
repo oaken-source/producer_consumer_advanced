@@ -17,3 +17,8 @@ Aufgabenstellung:
  Identifizieren Sie die Kritische Sekition im Programm, und schützen Sie den
  Programmablauf vor Verfälschung der geteilten Daten durch die Verwendung von
  Semaphoren.
+
+ ** ADVANCED MODE: **
+
+ Was müssen Sie in Ihrer Lösung beachten, wenn es mehrere Threads in der Rolle
+ der Konsumenten und der Produzenten geben kann?

@@ -1,7 +1,11 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 
-#include <sys/types.h>
+#ifdef _WIN32
+#  include <windows.h>
+#else
+#  include <sys/types.h>
+#endif
 
 struct element
 {

@@ -1,0 +1,10 @@
+#ifndef MAIN_H
+#define MAIN_H
+
+#define USLEEP_START 1000
+#define USLEEP_RANGE 9000
+
+#define QUEUE_CAPACITY 50
+#define MONITOR_INTERVAL 200000
+
+#endif

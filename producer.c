@@ -4,8 +4,11 @@
 #include "main.h"
 #include "queue.h"
 
-#include <unistd.h>
 #include <stdlib.h>
+
+#ifndef _WIN32
+#  include <unistd.h>
+#endif
 
 static void
 produce_element (void)
@@ -13,19 +16,30 @@ produce_element (void)
   static size_t n = 0;
 
   // produce an element
+  // TODO: protect this from concurrent access
   struct element e = { n };
   n++;
+
+#ifdef _WIN32
+  Sleep((USLEEP_START + rand() % USLEEP_RANGE) / 1000);
+#else
   usleep(USLEEP_START + rand() % USLEEP_RANGE);
+#endif
 
   // add it to the queue
   enqueue(e);
 }
 
+#ifdef _WIN32
+DWORD WINAPI
+produce (LPVOID arg)
+#else
 void*
 produce (void *arg)
+#endif
 {
   while (1)
     produce_element();
 
-  return NULL;
+  return 0;
 }

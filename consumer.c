@@ -4,9 +4,12 @@
 #include "main.h"
 #include "queue.h"
 
-#include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
+
+#ifndef _WIN32
+#  include <unistd.h>
+#endif
 
 static void
 consume_element (void)
@@ -17,22 +20,32 @@ consume_element (void)
   struct element e = dequeue();
 
   // make sure we are consistent
+  // TODO: protect this from concurrent access
   if (e.id != n)
     {
-      fprintf(stderr, "CORRUPTION DETECTED! expected id %zu, got id %zu\n", n, e.id);
+      fprintf(stderr, "CORRUPTION DETECTED! expected id %lu, got id %lu\n", n, e.id);
       abort();
     }
   n++;
 
   // operate on the element
+#ifdef _WIN32
+  Sleep((USLEEP_START + rand() % USLEEP_RANGE) / 1000);
+#else
   usleep(USLEEP_START + rand() % USLEEP_RANGE);
+#endif
 }
 
+#ifdef _WIN32
+DWORD WINAPI
+consume (LPVOID arg)
+#else
 void*
 consume (void *arg)
+#endif
 {
   while (1)
     consume_element();
 
-  return NULL;
+  return 0;
 }
