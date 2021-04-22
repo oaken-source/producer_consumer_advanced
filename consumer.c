@@ -16,14 +16,14 @@ consume_element (void)
 {
   static size_t n = 0;
 
-  // retreive an element from the queue
+  // retrieve an element from the queue
   struct element e = dequeue();
 
   // make sure we are consistent
   // TODO: protect this from concurrent access
   if (e.id != n)
     {
-      fprintf(stderr, "CORRUPTION DETECTED! expected id %lu, got id %lu\n", n, e.id);
+      fprintf(stderr, "CORRUPTION DETECTED! expected id %zu, got id %zu\n", n, e.id);
       abort();
     }
   n++;

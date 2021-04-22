@@ -1,2 +1,4 @@
 producer_consumer
 *.dSYM
+*.obj
+*.exe

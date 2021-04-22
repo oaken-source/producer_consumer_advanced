@@ -60,7 +60,7 @@ dequeue (void)
 void
 monitor (void)
 {
-  size_t window[10] = { 0 };
+  long long int window[10] = { 0 };
   size_t n = 0;
   size_t last = 0;
 
@@ -71,8 +71,9 @@ monitor (void)
       size_t filled;
       int i;
 
-      processed = queue[head_r].id - last;
-      last = queue[head_r].id;
+      int r = head_r;
+      processed = queue[r].id - last;
+      last = queue[r].id;
       window[n++] = processed;
       n %= 10;
 
