@@ -38,6 +38,8 @@ void*
 produce (void *arg)
 #endif
 {
+  (void)arg;
+
   while (1)
     produce_element();
 
