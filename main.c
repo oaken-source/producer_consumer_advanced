@@ -2,29 +2,20 @@
 #include "producer.h"
 #include "consumer.h"
 #include "queue.h"
+#include "util.h"
+#include "thread_helper.h"
 
 #include <stdlib.h>
 #include <stdio.h>
-
-#ifdef _WIN32
-#  include <windows.h>
-#elif (defined(__unix__) || defined(__unix) || (defined(__APPLE__) && defined(__MACH__)))
-#  include <pthread.h>
-#  include <sys/time.h>
-#else
-#  error Unsupported plattform
-#endif
 
 int
 main (int argc, char *argv[])
 {
   int thread_count;
   int *thread_args;
-#ifdef _WIN32
-  HANDLE    *threads;
-#else
-  pthread_t *threads;
-#endif
+
+  thread_helper_t *threads;
+
   int i;
 
   if (argc < 2)
@@ -65,20 +56,11 @@ main (int argc, char *argv[])
     {
       thread_args[i] = i;
 
-#ifdef _WIN32
-      threads[i] = CreateThread(NULL, 0, (i & 1) ? produce : consume, (void *)(thread_args + i), 0, NULL);
-      if (threads[i] == NULL)
+      if (thread_helper_create(threads + i, (i & 1) ? &produce : &consume, thread_args + i) != 0)
         {
-          fprintf(stderr, "error: CreateThread (#%d)\n", GetLastError());
-          return 3;
+          perror("thread_helper_create");
+          return 1;
         }
-#else
-      if (pthread_create(&threads[i], NULL, (i & 1) ? produce : consume, (void *)(thread_args + i)) != 0)
-        {
-          perror("pthread_create");
-          return 3;
-        }
-#endif
 
     }
 
